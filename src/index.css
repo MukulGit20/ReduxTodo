@@ -11,3 +11,36 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.Padding{
+  padding-right: 30px;
+  padding-left: 80px;
+  padding-bottom: 15px;
+}
+
+.header {
+  text-align: right !important;
+  padding:30px;
+  font-size:40px;
+  font-weight:600;
+}
+
+.subheader {
+  text-align: right !important;
+  padding-right:40px;
+  padding-bottom:10px;
+  font-size:16px;  
+}
+
+.tdBtn{
+  text-align: right;
+  width: 30%;
+  padding-right: 10px;
+}
+
+.tdTxt{
+  text-align: left;
+  width: 70%;
+  padding-left: 10px;
+  font-size: 18px;
+}

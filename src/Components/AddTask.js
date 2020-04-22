@@ -17,18 +17,43 @@ const AddTask = (props) => {
     }
 
     return (
-        <div>
-            <h1>To-Do App!</h1>
-            <label>Add New To-Do</label>
-            <input value={firstValue} onChange={handleFirstChange} onKeyUp={handleFirstChange}  /> 
-            <button onClick={handleAdd}>Add</button>
-            <div>
-                <h2>Let's get some work done!</h2>
-                {todoList.length > 0 && <ul>
-                    {todoList.map((todo, index) => <li key={index}><button onClick={() => handleDelete(index)}>Delete</button><button>Complete</button>{todo.Title}</li>)}
-                    </ul>}
+        <div className="container">
+            <div className="bg-primary col-xs-12">
+                <h1 className="header" >To-Do App!</h1>
             </div>
-            
+            <div className="bg-primary col-xs-12 subheader">
+                <label>Add New To-Do</label>
+            </div>
+            <div className="bg-primary col-xs-12 Padding">
+                <input className="form-control" value={firstValue} onChange={handleFirstChange} onKeyUp={handleFirstChange}  /> 
+            </div>
+            <div className="bg-primary col-xs-12 subheader">
+                <button className="btn btn-primary btn-lg" onClick={handleAdd}>Add</button>
+            </div>
+            <div className="col-xs-12">
+                <h2>Let's get some work done!</h2>
+            </div>
+            {/* <div className="col-xs-12">
+                {todoList.length > 0 && <ul className="list-group">
+                    {todoList.map((todo, index) => <li className="list-group-item" key={index}><button onClick={() => handleDelete(index)}>Delete</button><button>Complete</button>{todo.Title}</li>)}
+                    </ul>}
+            </div> */}
+            <div className="col-xs-12">
+                {
+                    todoList.length > 0 && 
+                    <table className="col-xs-12">
+                        {
+                            todoList.map((todo, index) => <tr key={index}>
+                                <td className="tdBtn">
+                                    <button className="btn-default btn-lg">Complete</button>&nbsp;
+                                    <button className="btn-default btn-lg" onClick={() => handleDelete(index)}>Delete</button>
+                                </td>
+                                <td className="tdTxt">{todo.Title}</td>
+                            </tr>)
+                        }
+                    </table>
+                }
+            </div>
         </div>
     );
 }
