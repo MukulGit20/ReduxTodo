@@ -9,11 +9,23 @@ const AddTask = (props) => {
     }
 
     const handleAdd = () => {
-        addItem(firstValue.toString());
+        addItem(firstValue.toString(),"Y");
     }
 
-    const handleDelete = (index) =>{
+    const handleDelete = (index) => {
         deleteItem(Number(index));
+    }
+
+    const handleComplete = (index) => {
+        const taskStatus = todoList[index].IsComplete;
+        if(taskStatus === "Y")
+        {
+            todoList[index].IsComplete = "N"
+        }
+        else if(taskStatus === "N")
+        {
+            todoList[index].IsComplete = "Y"
+        }
     }
 
     return (
@@ -25,7 +37,7 @@ const AddTask = (props) => {
                 <label>Add New To-Do</label>
             </div>
             <div className="bg-primary col-xs-12 Padding">
-                <input className="form-control" value={firstValue} onChange={handleFirstChange} onKeyUp={handleFirstChange}  /> 
+                <input className="form-control lg" placeholder="Enter new task" pattern="[a-zA-Z0-9\s]+" value={firstValue} onChange={handleFirstChange} onKeyUp={handleFirstChange}  /> 
             </div>
             <div className="bg-primary col-xs-12 subheader">
                 <button className="btn btn-primary btn-lg" onClick={handleAdd}>Add</button>
@@ -44,11 +56,13 @@ const AddTask = (props) => {
                     <table className="col-xs-12">
                         {
                             todoList.map((todo, index) => <tr key={index}>
-                                <td className="tdBtn">
-                                    <button className="btn-default btn-lg">Complete</button>&nbsp;
-                                    <button className="btn-default btn-lg" onClick={() => handleDelete(index)}>Delete</button>
-                                </td>
-                                <td className="tdTxt">{todo.Title}</td>
+                                    
+                            <td className="tdBtn">
+                                <button className="btn-default btn-lg" onClick={() => handleComplete(index)}>{todo.IsComplete === "Y" ? "Complete" : "Undo"}</button>
+                                <button className="btn-default btn-lg" onClick={() => handleDelete(index)}>Delete</button>
+                            </td>
+                                
+                            <td className="tdTxt" style={{textDecoration: todo.IsComplete === "N" ? "line-through" : "none"}}>{todo.Title}</td>
                             </tr>)
                         }
                     </table>
@@ -69,7 +83,7 @@ const mapStateToProps = (store) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         setFirstValue: (value) => dispatch({type: 'SET_FIRST_VALUE', payload: value}),
-        addItem: (title) => dispatch({type: 'ADD_ITEM', payload: {Title: title}}),
+        addItem: (title,isComplete) => dispatch({type: 'ADD_ITEM', payload: {Title: title , IsComplete: isComplete}}),
         deleteItem: (index) => dispatch({type: 'DELETE_ITEM', payload:index})
     }
 };

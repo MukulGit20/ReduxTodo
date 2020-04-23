@@ -10,9 +10,9 @@ const addReducer = (state=defaultState, action) => {
         case 'ADD_ITEM': 
             return {...state, list: state.list.concat(action.payload)};
         case 'DELETE_ITEM':
-            const l = state.list
-            l.splice(action.payload,1)
-            return {...state, list: l};
+            const temp = state.list
+            temp.splice(action.payload,1)
+            return {...state, list: temp};
         default:
             return state;
     }
