@@ -2,30 +2,28 @@ import React from 'react'
 import {connect} from 'react-redux';
 
 const AddTask = (props) => {
-    const {firstValue, setFirstValue, todoList, addItem, deleteItem} = props;
+    const {firstValue, setFirstValue, todoList, addItem, deleteItem, setTaskStatus, idCounter = 0} = props;
+
+// useEffect(() => {
+
+// },[todoList]);
 
     const handleFirstChange = (e) => {
         setFirstValue(e.target.value);
     }
 
     const handleAdd = () => {
-        addItem(firstValue.toString(),"Y");
+        if (firstValue !== "") {
+            addItem(firstValue.toString(),"Y",idCounter);    
+        }
     }
 
-    const handleDelete = (index) => {
-        deleteItem(Number(index));
+    const handleDelete = (id) => {
+        deleteItem(Number(id));
     }
 
-    const handleComplete = (index) => {
-        const taskStatus = todoList[index].IsComplete;
-        if(taskStatus === "Y")
-        {
-            todoList[index].IsComplete = "N"
-        }
-        else if(taskStatus === "N")
-        {
-            todoList[index].IsComplete = "Y"
-        }
+    const handleComplete = (id) => {
+        setTaskStatus(Number(id));
     }
 
     return (
@@ -55,11 +53,11 @@ const AddTask = (props) => {
                     todoList.length > 0 && 
                     <table className="col-xs-12">
                         {
-                            todoList.map((todo, index) => <tr key={index}>
+                            todoList.map((todo) => <tr key={todo.IdCounter}>
                                     
                             <td className="tdBtn">
-                                <button className="btn-default btn-lg" onClick={() => handleComplete(index)}>{todo.IsComplete === "Y" ? "Complete" : "Undo"}</button>
-                                <button className="btn-default btn-lg" onClick={() => handleDelete(index)}>Delete</button>
+                                <button className="btn-default btn-lg" onClick={() => handleComplete(todo.IdCounter)}>{todo.IsComplete === "Y" ? "Complete" : "Undo"}</button>
+                                <button className="btn-default btn-lg" onClick={() => handleDelete(todo.IdCounter)}>Delete</button>
                             </td>
                                 
                             <td className="tdTxt" style={{textDecoration: todo.IsComplete === "N" ? "line-through" : "none"}}>{todo.Title}</td>
@@ -76,16 +74,19 @@ const AddTask = (props) => {
 const mapStateToProps = (store) => {
     return {
         firstValue: store.add.firstValue,
-        todoList: store.add.list,
+        todoList: store.add.list
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         setFirstValue: (value) => dispatch({type: 'SET_FIRST_VALUE', payload: value}),
-        addItem: (title,isComplete) => dispatch({type: 'ADD_ITEM', payload: {Title: title , IsComplete: isComplete}}),
-        deleteItem: (index) => dispatch({type: 'DELETE_ITEM', payload:index})
+        addItem: (title,isComplete, idCounter) => dispatch({type: 'ADD_ITEM', payload: {Title: title , IsComplete: isComplete , IdCounter: idCounter}}),
+        deleteItem: (id) => dispatch({type: 'DELETE_ITEM', payload:id}),
+        setTaskStatus: (id) => dispatch({type: 'SET_STATUS', payload: id})
     }
 };
+
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddTask);
